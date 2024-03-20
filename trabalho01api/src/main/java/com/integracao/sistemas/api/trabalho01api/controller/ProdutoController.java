@@ -4,6 +4,7 @@ package com.integracao.sistemas.api.trabalho01api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +52,17 @@ public class ProdutoController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<List<Produto>> buscarPorNome(@PathVariable String nome) {
+        List<Produto> produtos = produtoRepository.findByNomeContaining(nome);
+
+        if (!produtos.isEmpty()) {
+            return ResponseEntity.ok(produtos);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Produto create(@RequestBody Produto produto) {
@@ -58,7 +70,7 @@ public class ProdutoController {
     }
 
     @PutMapping("/{produtoId}")
-    public ResponseEntity<Produto> upadate(@PathVariable Long produtoId, @RequestBody Produto produto) {
+    public ResponseEntity<Produto> update(@PathVariable Long produtoId, @RequestBody Produto produto) {
         if(!produtoRepository.existsById(produtoId)){
             return ResponseEntity.notFound().build();
         }
@@ -67,6 +79,16 @@ public class ProdutoController {
         produto = produtoRepository.save(produto);
         
         return ResponseEntity.ok(produto);
+    }
+
+    @DeleteMapping("/{produtoId}")
+    public ResponseEntity<Void> excluir(@PathVariable Long produtoId){
+        if(!produtoRepository.existsById(produtoId)){
+            return ResponseEntity.notFound().build();
+        }
+
+        produtoRepository.deleteById(produtoId);
+        return ResponseEntity.noContent().build();
     }
 
 }
