@@ -12,5 +12,4 @@ import java.util.List;
 public interface I_ProdutoRepository extends JpaRepository<Produto, Long>{
 
     List<Produto> findByNomeContaining(String nome);
-    
 }

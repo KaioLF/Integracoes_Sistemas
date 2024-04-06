@@ -62,8 +62,8 @@ public class ProdutoController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Produto create(@RequestBody Produto produto) {
-        return produtoRepository.save(produto);
+    public List<Produto> create(@RequestBody List<Produto> produtos) {
+        return produtoRepository.saveAll(produtos);
     }
 
     @PutMapping("/{produtoId}")
