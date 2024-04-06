@@ -1,6 +1,6 @@
 <h1 align="center" id="title">API-Produtos-SpringBoot</h1>
 
-<p id="description">Este projeto foi criado para a disciplina de Integrações de Sistemas do meu curso de Engenharia de Software. Através deste projeto pude ter um primeiro contato com criação de APIs usando Java com o SpringBoot e como todo bom amante de Java(sim nós existimos) eu simplesmente adorei a ferramenta.</p>
+<p id="description">Este projeto foi criado para a disciplina de Integrações de Sistemas do meu curso de Engenharia de Software. Através deste projeto pude ter um primeiro contato com criação de APIs usando Java com o SpringBoot e como todo bom amante de Java(sim, nós existimos) eu simplesmente adorei a ferramenta.</p>
 
 <h2>🚀 Demo</h2>
 
