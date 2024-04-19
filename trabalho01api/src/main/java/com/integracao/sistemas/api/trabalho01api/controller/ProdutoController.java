@@ -60,7 +60,7 @@ public class ProdutoController {
         return ResponseEntity.notFound().build();
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED) 
     @PostMapping
     public List<Produto> create(@RequestBody List<Produto> produtos) {
         return produtoRepository.saveAll(produtos);
