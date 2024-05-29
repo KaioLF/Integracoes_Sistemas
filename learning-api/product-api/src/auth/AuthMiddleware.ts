@@ -10,15 +10,15 @@ export class AuthMiddleware implements NestMiddleware {
         const token = req.headers['authorization'];
 
         if (!token || !token.startsWith('Bearer ')) {
-            return res.status(401).json({ message: 'Token de autenticação não fornecido' });
+        return res.status(401).json({ message: 'Token de autenticação não fornecido' });
         }
 
         try {
-            const decoded = this.jwtService.verify(token.substring(7)); // Remove "Bearer " do token
-            req.user = decoded;
-            next();
+        const decoded = this.jwtService.verify(token.substring(7)); // Remove "Bearer " do token
+        req.user = decoded;
+        next();
         } catch (err) {
-            return res.status(401).json({ message: 'Token de autenticação inválido' });
+        return res.status(401).json({ message: 'Token de autenticação inválido' });
         }
     }
 }
