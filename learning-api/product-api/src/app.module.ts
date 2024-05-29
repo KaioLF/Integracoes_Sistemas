@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Product } from './models/Product';
+import { AuthMiddleware } from './auth/AuthMiddleware'; // Importe o middleware de autenticação
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { Product } from './models/Product';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'positivo',
+      password: 'root',
       database: 'generaldbs',
       models: [Product],
     }),
@@ -20,4 +21,9 @@ import { Product } from './models/Product';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  // Implemente o método `configure`
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*'); // Aplica o middleware de autenticação a todas as rotas
+  }
+}

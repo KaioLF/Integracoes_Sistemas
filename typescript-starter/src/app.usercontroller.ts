@@ -138,4 +138,66 @@ export class AppUserController {
 
     return allResponses;
   }
+
+  // Vamos conceber uma rota que deva receber dados de nome e email
+  // e verificar se o usuário existe, caso exista, devemos retornar
+  // Caso contrário, devemos criar o usuário
+  // Se o email não confere, então devemos retornar o usuário existente
+  // Sem exibir a informação de e-mail.
+  // Observe como lidamos com a chamada das rotas e como de uma outra api na
+  // formulação geral da resposta
+  @Get('/verify-and-create-user')
+  public async created(
+    @Query('email') email: string,
+    @Query('name') name: string,
+  ) {
+    // realizamos uma chamada para a rota get da api de usuários
+    const user = await axios.get(`http://localhost:3004/users?name=${name}`);
+
+    // Caso o usuário não exista, criamos um novo usuário
+    if (user.data.length == 0) {
+      //encapsulamos a resposta em um objeto que contem a mensagem e o usuário
+      return this.createIfNotExist(name, email);
+    } 
+    // caso o usuário existe, verificamos o email - se existe ou não
+    else if (user.data[0].email !== email) {
+      // removemos a informação de password do usuário
+      delete user.data[0].password;
+
+      // formatamos a resposta usando dto
+      return {
+        msg: 'esse usuário existe, mas o email não confere.',
+        user: user.data[0],
+      };
+    }
+
+    // para o cenário onde o usuário existe e o email confere
+    delete user.data[0].password;
+
+    return {
+      msg: 'esse usuário existe e o email confere.',
+      user: user.data[0],
+    };
+  }
+
+  // função que cria um novo usuário
+  private async createIfNotExist(name: string, email: string) {
+    const newUserObject = {
+      name,
+      email,
+      password: 'senha123',
+      document: 'nc',
+      phone: 'nc',
+      address: 'nc',
+    };
+
+    // realizamos uma chamada post para a api de usuários
+    await axios.post('http://localhost:3004/users', newUserObject);
+
+    // retornamos a resposta encapsulada em um objeto
+    return {
+      msg: 'esse usuário não existe, então foi criado em nossa base de dados - por gentileza: atualize informações como password, documento, telefone e endereço assim que possível.',
+      user: newUserObject,
+    };
+  }
 }
